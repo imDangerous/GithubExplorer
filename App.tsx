@@ -1,115 +1,67 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StatusBar, LogBox} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {enableScreens} from 'react-native-screens';
+import {createStackNavigator} from '@react-navigation/stack';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {NavigationContainer, RouteProp} from '@react-navigation/native';
+import SplashScreen from './src/screens/SplashScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import RepositoryScreen from './src/screens/RepositoryScreen';
+import IssueScreen from './src/screens/IssuesScreen';
+import IssueDetailScreen from './src/screens/IssueDetailScreen';
+import {RepositoryProvider} from './src/context/RepositoryContext';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const queryClient = new QueryClient();
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+enableScreens(true);
+const Stack = createStackNavigator();
+
+export type IssueData = {
+  user: string;
+  repo: string;
 };
+
+export type RootStackParams = {
+  IssueScreen: {data: {id: number; user: string; repo: string}};
+  IssueDetailScreen: {url: string};
+};
+
+export type RootRouteProps<RouteName extends keyof RootStackParams> = RouteProp<RootStackParams, RouteName>;
+
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+]);
+
+if (__DEV__) {
+  import('react-query-native-devtools').then(({addPlugin}) => {
+    addPlugin({queryClient});
+  });
+}
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <StatusBar translucent={true} animated={true} backgroundColor={'transparent'} barStyle={'default'} />
+      <QueryClientProvider client={queryClient}>
+        <RepositoryProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+              initialRouteName={'SplashScreen'}>
+              <Stack.Screen name={'SplashScreen'} component={SplashScreen} />
+              <Stack.Screen name={'HomeScreen'} component={HomeScreen} />
+              <Stack.Screen name={'RepositoryScreen'} component={RepositoryScreen} />
+              <Stack.Screen name={'IssueScreen'} component={IssueScreen} />
+              <Stack.Screen name={'IssueDetailScreen'} component={IssueDetailScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </RepositoryProvider>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
