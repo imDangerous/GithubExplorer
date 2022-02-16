@@ -66,6 +66,7 @@ export const Search: FC<SearchType> = forwardRef((props, ref: Ref<TextInput>) =>
 
   React.useEffect(() => {
     handleChangeText(defaultValue || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
   const setValidationRange = (text: string) => {
@@ -88,15 +89,12 @@ export const Search: FC<SearchType> = forwardRef((props, ref: Ref<TextInput>) =>
       // Range Re-Test
       setValidationRange(text);
     } else {
-      // console.log('scheme others');
-
       if (scheme) {
         // Scheme 패턴 체크
         validation.current = !!scheme.test(text);
       }
     }
 
-    // console.log('handle scheme', `text:${text}, valid:${validation.current}`);
     if (useClear) {
       if (text.length > 0) {
         setShowClear(true);
@@ -163,9 +161,7 @@ export const Search: FC<SearchType> = forwardRef((props, ref: Ref<TextInput>) =>
   );
 });
 
-const Container = styled.View`
-  // flex: 1;
-`;
+const Container = styled.View``;
 
 const SearchTextInput = styled(TextInput)`
   height: ${(props: InputStyleType) => (props.containerHeight ? props.containerHeight : 46)}px;

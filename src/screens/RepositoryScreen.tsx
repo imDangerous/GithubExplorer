@@ -276,16 +276,16 @@ const RepositoryScreen = () => {
         right={true}
         onRightPress={onPressSearch}
       />
+      <Style.Box flexDirection={'row'} marginLeft={24} marginRight={24} marginTop={24} marginBottom={8}>
+        <Typography.H7 color={Colors.grey65}>Repositories</Typography.H7>
+        {data?.pages[0].results && (
+          <Typography.H7 color={Colors.grey65}>
+            : {Utils.addNumberComma(data?.pages[0].results.total_count)}
+          </Typography.H7>
+        )}
+      </Style.Box>
+      <Style.Spacer width={Layout.width} height={2} backgroundColor={Colors.grey6} />
       <Container>
-        <Style.Box flexDirection={'row'} marginLeft={24} marginRight={24} marginTop={24} marginBottom={8}>
-          <Typography.H7 color={Colors.grey65}>Repositories</Typography.H7>
-          {data?.pages[0].results && (
-            <Typography.H7 color={Colors.grey65}>
-              : {Utils.addNumberComma(data?.pages[0].results.total_count)}
-            </Typography.H7>
-          )}
-        </Style.Box>
-        <Style.Spacer width={Layout.width} height={2} backgroundColor={Colors.grey6} />
         <MainList
           bounces={false}
           data={[]}
@@ -314,6 +314,11 @@ const RepositoryScreen = () => {
             />
           }
         />
+        {!data?.pages[0].results.total_count && (
+          <EmptyBox>
+            <Typography.H5>Empty</Typography.H5>
+          </EmptyBox>
+        )}
       </Container>
       <ToastMessage data={toastMessage.data} />
       {renderSearchModal()}
@@ -351,6 +356,11 @@ const AvatarImage = styled.Image`
   width: 32px;
   height: 32px;
   border-radius: 16px;
+`;
+
+const EmptyBox = styled.View`
+  flex: 1;
+  align-items: center;
 `;
 
 export default RepositoryScreen;

@@ -13,7 +13,6 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 export const request = {
   get: (url: string, params: {} | null) => instance.get(url, {params: params}).then(responseBody).catch(onError),
-  // getNoParam: (url: string) => instance.get(url, {params: params}).then(responseBody).catch(onError),
   post: (url: string, body: {}) => instance.post(url, body).then(responseBody).catch(onError),
 };
 
@@ -36,24 +35,3 @@ export const onError = function (error: any) {
   console.log('* Network Unknown Error', error);
   return Promise.reject(JSON.stringify(error));
 };
-
-// Request Interceptor
-instance.interceptors.request.use(
-  async function (config) {
-    console.log(
-      '## Interceptor Request',
-      `URL:${config.url}, METHOD:${config.method}, PARAMS:${JSON.stringify(config.params)}`,
-    );
-    return config;
-  },
-  function (error) {
-    // 오류 요청 가공
-    return Promise.reject(error);
-  },
-);
-
-// Response Interceptor
-instance.interceptors.response.use((response: AxiosResponse) => {
-  console.log(`## Interceptor Response Success: ${response.config.url}`, response.data);
-  return response;
-});

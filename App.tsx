@@ -12,15 +12,11 @@ import IssueScreen from './src/screens/IssuesScreen';
 import IssueDetailScreen from './src/screens/IssueDetailScreen';
 import {RepositoryProvider} from './src/context/RepositoryContext';
 
-const queryClient = new QueryClient();
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+]);
 
 enableScreens(true);
-const Stack = createStackNavigator();
-
-export type IssueData = {
-  user: string;
-  repo: string;
-};
 
 export type RootStackParams = {
   IssueScreen: {data: {id: number; user: string; repo: string}};
@@ -29,10 +25,13 @@ export type RootStackParams = {
 
 export type RootRouteProps<RouteName extends keyof RootStackParams> = RouteProp<RootStackParams, RouteName>;
 
-LogBox.ignoreLogs([
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-]);
+// Stack Navigation 설정
+const Stack = createStackNavigator();
 
+// React Query 전역 설정
+const queryClient = new QueryClient();
+
+// React Query Plugin 설정
 if (__DEV__) {
   import('react-query-native-devtools').then(({addPlugin}) => {
     addPlugin({queryClient});

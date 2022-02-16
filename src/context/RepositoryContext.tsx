@@ -1,6 +1,9 @@
 import React, {createContext, useState} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
+/**
+ * 로컬 데이터 관리시 메시지 정의
+ */
 export type RepositorySaveResult = 'added' | 'deleted' | 'save-failed' | 'max' | 'exist' | 'not-exist' | null;
 
 export type RepositorySaveData = {
@@ -33,15 +36,19 @@ interface Props {
 }
 
 const RepositoryProvider = ({children}: Props): JSX.Element => {
+  const STORE_KEY = 'repos';
   const [starred, setStarred] = useState<RepositorySaveData[]>([]);
 
   const saveStarred = async (data: RepositorySaveData[]) => {
     const repo = JSON.stringify(data);
-    await AsyncStorage.setItem('repos', repo);
+    await AsyncStorage.setItem(STORE_KEY, repo);
   };
 
+  /**
+   * Context 초기화
+   */
   const initRepository = async () => {
-    await AsyncStorage.getItem('repos').then((result) => {
+    await AsyncStorage.getItem(STORE_KEY).then((result) => {
       console.log('initRepository');
       if (result) {
         setStarred(JSON.parse(result));
@@ -51,6 +58,11 @@ const RepositoryProvider = ({children}: Props): JSX.Element => {
     });
   };
 
+  /**
+   * Item 추가
+   *
+   * @param data: RepositorySaveData
+   */
   const addRepository = async (data: RepositorySaveData): Promise<RepositorySaveResult> => {
     const exist = starred.find((old) => old.id === data.id);
     if (exist) {
@@ -72,6 +84,11 @@ const RepositoryProvider = ({children}: Props): JSX.Element => {
     }
   };
 
+  /**
+   * Item 삭제
+   *
+   * @param data: RepositorySaveData
+   */
   const removeRepository = async (data: RepositorySaveData): Promise<RepositorySaveResult> => {
     const exist = starred.find((old) => old.id === data.id);
     if (exist) {
@@ -89,8 +106,11 @@ const RepositoryProvider = ({children}: Props): JSX.Element => {
     }
   };
 
+  /**
+   * Item 전체 삭제
+   */
   const clearRepository = () => {
-    AsyncStorage.setItem('repos', JSON.stringify([])).then(() => setStarred([]));
+    AsyncStorage.setItem(STORE_KEY, JSON.stringify([])).then(() => setStarred([]));
   };
 
   return (
