@@ -40,9 +40,6 @@
 ### &#8251; ios/pod install 시 ruby version 문제 해결
 ```text
 프로젝트 최상위 폴더내 .ruby-version을 에디터로 열고 설치된 버전으로 수정
-
-
-&#8251; 제 PC에 설치된 루비는 2.7.4
 ```
 
 ### &#8251; ios/pod install 시 cocoapods 버전 문제
