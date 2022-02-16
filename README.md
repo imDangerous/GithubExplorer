@@ -19,14 +19,20 @@
 - Ruby 2.7.4
 - React Native 0.67.2 (with TypeScript)
 - iPhone 13 Pro 15.0 (Simulator)
+- Android API30 (Simulator)
 
 
 ## 빌드
 
-> 💡 빌드시 확인해주세요
+> 💡 Git Clone해서 빌드했을 때는 특이점이 없었습니다.
+
 
 제 개발 환경 때문인지 모르겠으나, 프로젝트 생성시 Cocoapods 관련해서 특이점이 있었습니다.  
 개발 환경 차이로 빌드시 문제가 될 수 있을 것 같으니 꼭 확인 부탁드립니다.
+
+### 빌드 특이사항
+
+> 💡 빌드시 확인해주세요
 
 ### 1. 특이점
 ```text
