@@ -42,7 +42,7 @@ if (__DEV__) {
 const App = () => {
   return (
     <SafeAreaProvider>
-      <StatusBar translucent={true} animated={true} backgroundColor={'transparent'} barStyle={'default'} />
+      <StatusBar translucent={true} animated={true} />
       <QueryClientProvider client={queryClient}>
         <RepositoryProvider>
           <NavigationContainer>
