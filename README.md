@@ -34,30 +34,6 @@
 
 > 💡 빌드시 확인해주세요
 
-### 1. 특이점
-```text
- 1. 프로젝트 생성시 Gemfile, Gemfile.lock, .ruby-version 생성 됨
- 2. ios/pod install 시 ruby version 문제
- 3. ios/pod install 시 cocoapods 버전 문제
-```
-
-### 2. 문제 해결
-
-### &#8251; ios/pod install 시 ruby version 문제 해결
-```text
-프로젝트 최상위 폴더내 .ruby-version을 에디터로 열고 설치된 버전으로 수정
-```
-
-### &#8251; ios/pod install 시 cocoapods 버전 문제
-```shell
-Could not find proper version of cocoapods (1.11.2) in any of the sources
-Run `bundle install` to install missing gems.
-```
-
-bundle install 을 실행하면 필요한 모듈들이 설치됩니다.  
-이후 pod install 로 한번 더 설치되었는지 확인해주세요.
-
-
 
 ## 소스 구조
 | Name       | Description                   |
